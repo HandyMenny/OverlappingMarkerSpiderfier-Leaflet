@@ -31,6 +31,7 @@ Note: The Leaflet maps API must be included *before* this code
     p['legColors'] =
       'usual': '#222'
       'highlighted': '#f00'
+    p['legStartCenter'] = true
 
     # Note: it's OK that this constructor comes after the properties, because of function hoisting
     constructor: (@map, opts = {}) ->
@@ -139,6 +140,7 @@ Note: The Leaflet maps API must be included *before* this code
       @spiderfying = yes
       numFeet = markerData.length
       bodyPt = @ptAverage(md.markerPt for md in markerData)
+      centerLatLng = @map.layerPointToLatLng(bodyPt)
       footPts = if numFeet >= @['circleSpiralSwitchover']
         @generatePtsSpiral(numFeet, bodyPt).reverse()  # match from outside in => less criss-crossing
       else
@@ -147,7 +149,7 @@ Note: The Leaflet maps API must be included *before* this code
         footLl = @map.layerPointToLatLng(footPt)
         nearestMarkerDatum = @minExtract(markerData, (md) => @ptDistanceSq(md.markerPt, footPt))
         marker = nearestMarkerDatum.marker
-        leg = new L.Polyline [marker.getLatLng(), footLl], {
+        leg = new L.Polyline [ (if @['legStartCenter'] then centerLatLng else marker.getLatLng()), footLl], {
           color: @['legColors']['usual']
           weight: @['legWeight']
           interactive: no

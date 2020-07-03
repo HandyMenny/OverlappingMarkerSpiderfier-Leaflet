@@ -46,6 +46,8 @@
         'highlighted': '#f00'
       };
 
+      p['legStartCenter'] = true;
+
       function _Class(map, opts) {
         var e, j, k, len, ref, v;
         this.map = map;
@@ -242,7 +244,7 @@
       };
 
       p.spiderfy = function(markerData, nonNearbyMarkers) {
-        var bodyPt, footLl, footPt, footPts, leg, marker, md, mhl, nearestMarkerDatum, numFeet, spiderfiedMarkers;
+        var bodyPt, centerLatLng, footLl, footPt, footPts, leg, marker, md, mhl, nearestMarkerDatum, numFeet, spiderfiedMarkers;
         this.spiderfying = true;
         numFeet = markerData.length;
         bodyPt = this.ptAverage((function() {
@@ -254,6 +256,7 @@
           }
           return results;
         })());
+        centerLatLng = this.map.layerPointToLatLng(bodyPt);
         footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsSpiral(numFeet, bodyPt).reverse() : this.generatePtsCircle(numFeet, bodyPt);
         spiderfiedMarkers = (function() {
           var j, len, results;
@@ -267,10 +270,10 @@
               };
             })(this));
             marker = nearestMarkerDatum.marker;
-            leg = new L.Polyline([marker.getLatLng(), footLl], {
+            leg = new L.Polyline([(this['legStartCenter'] ? centerLatLng : marker.getLatLng()), footLl], {
               color: this['legColors']['usual'],
               weight: this['legWeight'],
-              clickable: false
+              interactive: false
             });
             this.map.addLayer(leg);
             marker['_omsData'] = {
