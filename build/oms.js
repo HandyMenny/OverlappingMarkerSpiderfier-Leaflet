@@ -193,7 +193,7 @@
         if (!(markerSpiderfied && this['keepSpiderfied'])) {
           this['unspiderfy']();
         }
-        if (markerSpiderfied) {
+        if (markerSpiderfied || this['nearbyDistance'] <= 0) {
           return this.trigger('click', marker);
         } else {
           nearbyMarkerData = [];

@@ -113,7 +113,7 @@ Note: The Leaflet maps API must be included *before* this code
     p.spiderListener = (marker) ->
       markerSpiderfied = marker['_omsData']?
       @['unspiderfy']() unless markerSpiderfied and @['keepSpiderfied']
-      if markerSpiderfied
+      if markerSpiderfied || @['nearbyDistance'] <= 0
         @trigger('click', marker)
       else
         nearbyMarkerData = []

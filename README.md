@@ -155,7 +155,7 @@ markers one by one, you can override this behaviour by setting the
 **nearbyDistance** (default: `20`).
 
 This is the pixel radius within which a marker is considered to be
-overlapping a clicked marker.
+overlapping a clicked marker. A zero or negative value disables spiderfy.
 
 **circleSpiralSwitchover** (default: `9`)
 
